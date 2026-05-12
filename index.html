@@ -1,0 +1,89 @@
+
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Hola Kmi — Presentación</title>
+  <link rel="stylesheet" href="assets/style.css" />
+</head>
+<body>
+  <main class="wrap">
+    <header class="hero">
+      <div class="hero-left">
+        <h1>Hola, soy ASMR</h1>
+        <p class="lead">Creadora de contenido con alma rockera — una carta-presentación para <strong>Kmi</strong></p>
+        <div class="controls">
+          <button id="prev" aria-label="Anterior">◀ Anterior</button>
+          <button id="playPause" aria-label="Pausa">Pausa</button>
+          <button id="next" aria-label="Siguiente">Siguiente ▶</button>
+        </div>
+      </div>
+      <div class="hero-right">
+        <img src="assets/images/her_photo.jpg" alt="Foto de ella" id="heroPhoto" />
+      </div>
+    </header>
+
+    <section class="slideshow" aria-roledescription="carousel">
+      <div class="slides" id="slides">
+        <!-- Slide 1: Saludo y mensaje breve -->
+        <article class="slide active" data-index="0">
+          <h2>Hola Kmi 👋</h2>
+          <p>Espero que te haya ido increíble en la entrega de tu pintura — quedó preciosa, y lo mejor es que aún no la habías terminado cuando la presentaste. Yo apenas logro una bolita y un palito, ¡JAJA!</p>
+        </article>
+
+        <!-- Slide 2: Talento y apoyo -->
+        <article class="slide" data-index="1">
+          <h2>Tu talento</h2>
+          <p>Tu trabajo demuestra creatividad, valentía y simpatía — cualidades raras y poderosas. Conocer más de ti fue un gusto: gracias por la confianza (¡y por compartir anécdotas como lo de tu ex!).</p>
+        </article>
+
+        <!-- Slide 3: ASMR + Rock -->
+        <article class="slide" data-index="2">
+          <h2>ASMR con alma rockera</h2>
+          <p>Tu mezcla de ASMR y espíritu rocker es única — me encanta la vibra. Bandas que conectan con tu estilo: Ikiko, Siempre No y Enanitos Verdes. Esto te define y te da una voz propia.</p>
+        </article>
+
+        <!-- Slide 4: Cambio de escuela y examen -->
+        <article class="slide" data-index="3">
+          <h2>Sobre tu cambio de escuela</h2>
+          <p>Entiendo el estrés por la convivencia actual. Aplicar a la Escuela Esmeralda de la UNAM es una gran decisión — el examen es el 23 y 24 de mayo. Ánimo: estudiar esos 4 libros te pondrá muy cerca de tu meta.</p>
+        </article>
+
+        <!-- Slide 5: Lo personal y ánimo -->
+        <article class="slide" data-index="4">
+          <h2>Lo personal</h2>
+          <p>Estás cuidando tu espacio: si tu novio no te trata con cariño, tienes todo el derecho de replantearlo. Me alegra que hayas empezado el gimnasio — pequeños pasos que suman.</p>
+        </article>
+
+        <!-- Slide 6: Cierre y buenos deseos -->
+        <article class="slide" data-index="5">
+          <h2>Te deseo lo mejor ✨</h2>
+          <p>Confío en que este cambio te abrirá puertas. Estudia con calma y confía en ti: eres creativa, valiente y capaz. ¡A romperla en Esmeralda!</p>
+          <p class="note">Si quieres, puedo ayudarte a convertir esto en un video personalizado con tus fotos y clips (sin música) — dime si te interesa.</p>
+        </article>
+      </div>
+
+      <div class="slide-nav" id="dots" aria-hidden="false"></div>
+    </section>
+
+    <section class="original-text">
+      <h3>Ver mensaje completo</h3>
+      <button id="toggleOriginal">Mostrar / Ocultar</button>
+      <div id="originalContainer" class="hidden">
+        <pre class="original">
+Hola kmi (Foto de ella) espero te haya ido bien en la entrega de tu pintura por que te quedo preciosa y eso que aun ni la habias terminado, yo no paso de dibujar una bolita y un palito para referirme a una persona JAJAJAJAJAAJA, respecto a tu grupo me parece que es mas envidia que otra cosa eres chingona, creativa y simpatica cualidades que ya pocas personas tienen. Me encanto conocer un poco más acerca de ti y la confianza que nos tienes que hasta me platicaste de ti exnovio Jajajajaja que se llama igual que yo. La verdad por lo que me platicaste lo mejor que te pudo pasar es que se hayan separado en mi caso no me veo siendo pareja de alguien que no respete cualquier relación que tenga siendo pareja, familia o amigos. 
+
+Mas que nada me gustaria contestarle el video personalizado ella me conto que esta estresada por que se va a cambiar de escuela por lo dificil que es la convivencia con su grupo actual en la escuela, ella estudia comunicacion de artes visuales, se burlaron de ella por hacer videos de asmr. Y por ello esta aplicando a la escuela Esmeralda de la UNAM con lo cual tiene su fecha de examen el 23 y 24 de mayo del presente año por lo cual tiene que estudiar 4 libros. Y esta informacion se la esta ocultando a sus papas por que quiere esperar a los resultados del examen. Esto la ayudara por que se cambiara de una escuela privada a una publica. Y a la par tiene un novio que quiere terminar por que no le habla lindo. Empezo a ir al gimnasio. Y pues me gustaria desearle lo mejor. Sabiendo este contexto dime si te paso un dialogo o que informacion requieres para realizar la pagina web
+        </pre>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <p>Hecho con cariño — Si quieres más ajustes (colores, velocidad, o agregar fotos), dime y lo adapto.</p>
+    </footer>
+  </main>
+
+  <script src="assets/script.js"></script>
+</body>
+</html>
