@@ -1,0 +1,1081 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para Kmi 💫</title>
+    <script src="https://cdn.tailwindcss.com">
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --coral: #f97360;
+            --coral-light: #fda79a;
+            --coral-dark: #e55d4a;
+            --gold: #d4a56a;
+            --gold-light: #e8c99b;
+            --bg-dark: #0f0e12;
+            --bg-card: #1a1820;
+            --bg-card-hover: #221f2a;
+            --text-primary: #f0ece3;
+            --text-secondary: #b8b0a1;
+            --text-muted: #7a7265;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            overflow: hidden;
+            height: 100vh;
+            width: 100vw;
+        }
+
+        /* ── Slides Container ── */
+        .slides-container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.8s ease, visibility 0.8s ease;
+            overflow-y: auto;
+        }
+
+        .slide.active {
+            opacity: 1;
+            visibility: visible;
+            z-index: 10;
+        }
+
+        .slide-content {
+            max-width: 800px;
+            width: 100%;
+            text-align: center;
+        }
+
+        /* ── Background Decorations ── */
+        .bg-glow {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: 0.15;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .bg-glow-1 {
+            width: 600px;
+            height: 600px;
+            background: var(--coral);
+            top: -200px;
+            right: -200px;
+        }
+
+        .bg-glow-2 {
+            width: 500px;
+            height: 500px;
+            background: #7c5cbf;
+            bottom: -200px;
+            left: -200px;
+        }
+
+        .bg-glow-3 {
+            width: 400px;
+            height: 400px;
+            background: var(--gold);
+            bottom: -100px;
+            right: -100px;
+            opacity: 0.08;
+        }
+
+        /* ── Navigation ── */
+        .nav-arrow {
+            position: fixed;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 50;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-primary);
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(8px);
+            font-size: 1.2rem;
+        }
+
+        .nav-arrow:hover {
+            background: rgba(255, 255, 255, 0.12);
+            border-color: var(--coral);
+            color: var(--coral);
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .nav-arrow.prev {
+            left: 1.5rem;
+        }
+
+        .nav-arrow.next {
+            right: 1.5rem;
+        }
+
+        .nav-arrow.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* ── Dots ── */
+        .dots {
+            position: fixed;
+            bottom: 2.5rem;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 50;
+            display: flex;
+            gap: 0.6rem;
+            align-items: center;
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            padding: 0;
+        }
+
+        .dot:hover {
+            background: rgba(255, 255, 255, 0.4);
+        }
+
+        .dot.active {
+            background: var(--coral);
+            width: 28px;
+            border-radius: 5px;
+            box-shadow: 0 0 20px rgba(249, 115, 96, 0.3);
+        }
+
+        /* ── Progress Bar ── */
+        .progress-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            z-index: 45;
+            height: 3px;
+            background: var(--coral);
+            transition: width 0.1s linear;
+            box-shadow: 0 0 20px rgba(249, 115, 96, 0.3);
+        }
+
+        /* ── Typography ── */
+        .font-display {
+            font-family: 'Playfair Display', serif;
+        }
+
+        .text-coral {
+            color: var(--coral);
+        }
+
+        .text-gold {
+            color: var(--gold);
+        }
+
+        .border-coral {
+            border-color: var(--coral);
+        }
+
+        .bg-coral {
+            background-color: var(--coral);
+        }
+
+        /* ── Slide Specifics ── */
+        .slide-hero {
+            background: radial-gradient(ellipse at center, #1a1820 0%, #0f0e12 70%);
+        }
+
+        .hero-title {
+            font-size: clamp(2.5rem, 7vw, 5rem);
+            font-weight: 700;
+            line-height: 1.1;
+        }
+
+        .hero-sub {
+            font-size: clamp(1rem, 2vw, 1.3rem);
+            color: var(--text-secondary);
+            font-weight: 300;
+            letter-spacing: 0.05em;
+        }
+
+        .message-text {
+            font-size: clamp(1rem, 1.8vw, 1.25rem);
+            line-height: 1.8;
+            color: var(--text-primary);
+            font-weight: 300;
+        }
+
+        .message-text strong {
+            color: var(--coral-light);
+            font-weight: 500;
+        }
+
+        .highlight-box {
+            background: rgba(249, 115, 96, 0.08);
+            border: 1px solid rgba(249, 115, 96, 0.2);
+            border-radius: 1rem;
+            padding: 1.5rem 2rem;
+            margin: 1.5rem 0;
+        }
+
+        .highlight-box strong {
+            color: var(--coral-light);
+        }
+
+        /* ── Photo Frame ── */
+        .photo-frame {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin: 0 auto 1.5rem;
+            border: 3px solid rgba(249, 115, 96, 0.3);
+            box-shadow: 0 0 40px rgba(249, 115, 96, 0.15);
+            flex-shrink: 0;
+        }
+
+        .photo-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .photo-frame-sm {
+            width: 120px;
+            height: 120px;
+        }
+
+        /* ── Social Links ── */
+        .social-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 0.8rem 1.8rem;
+            border-radius: 50px;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-primary);
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .social-link:hover {
+            background: rgba(249, 115, 96, 0.15);
+            border-color: var(--coral);
+            color: var(--coral-light);
+            transform: translateY(-2px);
+        }
+
+        .social-link.youtube:hover {
+            border-color: #ff0000;
+            color: #ff4444;
+            background: rgba(255, 0, 0, 0.1);
+        }
+
+        .social-link.instagram:hover {
+            border-color: #e1306c;
+            color: #e1306c;
+            background: rgba(225, 48, 108, 0.1);
+        }
+
+        /* ── Music Button ── */
+        .music-btn {
+            position: fixed;
+            top: 1.5rem;
+            right: 1.5rem;
+            z-index: 60;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-primary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(8px);
+            font-size: 1.1rem;
+        }
+
+        .music-btn:hover {
+            background: rgba(249, 115, 96, 0.15);
+            border-color: var(--coral);
+            color: var(--coral-light);
+            transform: scale(1.1);
+        }
+
+        .music-btn.playing {
+            border-color: var(--coral);
+            box-shadow: 0 0 20px rgba(249, 115, 96, 0.2);
+        }
+
+        .music-btn .icon-play { display: inline; }
+        .music-btn .icon-pause { display: none; }
+        .music-btn.playing .icon-play { display: none; }
+        .music-btn.playing .icon-pause { display: flex; }
+
+        /* Music visualizer bars */
+        .visualizer-bars {
+            display: flex;
+            align-items: center;
+            gap: 2px;
+            height: 16px;
+        }
+
+        .visualizer-bar {
+            width: 3px;
+            height: 100%;
+            background: var(--coral);
+            border-radius: 2px;
+            opacity: 0.6;
+            animation: none;
+        }
+
+        .music-btn.playing .visualizer-bar {
+            animation: visualizer 0.8s ease-in-out infinite alternate;
+        }
+
+        .visualizer-bar:nth-child(1) { animation-delay: 0s; }
+        .visualizer-bar:nth-child(2) { animation-delay: 0.1s; }
+        .visualizer-bar:nth-child(3) { animation-delay: 0.2s; }
+        .visualizer-bar:nth-child(4) { animation-delay: 0.3s; }
+
+        .music-btn:not(.playing) .visualizer-bar {
+            height: 4px !important;
+            animation: none;
+            opacity: 0.3;
+        }
+
+        @keyframes visualizer {
+            0% { height: 4px; }
+            100% { height: 16px; }
+        }
+
+        @media (max-width: 768px) {
+            .music-btn {
+                top: 1rem;
+                right: 1rem;
+                width: 38px;
+                height: 38px;
+                font-size: 0.95rem;
+            }
+        }
+
+        /* ── Scrollbar ── */
+        .slide::-webkit-scrollbar {
+            width: 4px;
+        }
+        .slide::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .slide::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 2px;
+        }
+
+        /* ── Particle / Decorative ── */
+        .deco-circle {
+            position: absolute;
+            border-radius: 50%;
+            border: 1px solid rgba(249, 115, 96, 0.08);
+            pointer-events: none;
+        }
+
+        /* ── Responsive ── */
+        @media (max-width: 768px) {
+            .slide {
+                padding: 1.2rem;
+            }
+            .slide-content {
+                padding: 0 0.5rem;
+            }
+            .nav-arrow {
+                width: 36px;
+                height: 36px;
+                font-size: 0.9rem;
+            }
+            .nav-arrow.prev {
+                left: 0.6rem;
+            }
+            .nav-arrow.next {
+                right: 0.6rem;
+            }
+            .photo-frame {
+                width: 150px;
+                height: 150px;
+            }
+            .photo-frame-sm {
+                width: 90px;
+                height: 90px;
+            }
+            .dots {
+                bottom: 1.5rem;
+                gap: 0.4rem;
+            }
+            .dot.active {
+                width: 22px;
+            }
+            .highlight-box {
+                padding: 1rem 1.2rem;
+            }
+            .social-link {
+                padding: 0.6rem 1.2rem;
+                font-size: 0.85rem;
+            }
+            .message-text {
+                font-size: 0.95rem;
+                line-height: 1.7;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .photo-frame {
+                width: 110px;
+                height: 110px;
+            }
+            .photo-frame-sm {
+                width: 70px;
+                height: 70px;
+            }
+            .hero-title {
+                font-size: 2rem;
+            }
+            .nav-arrow {
+                width: 30px;
+                height: 30px;
+                font-size: 0.75rem;
+            }
+            .nav-arrow.prev {
+                left: 0.4rem;
+            }
+            .nav-arrow.next {
+                right: 0.4rem;
+            }
+        }
+
+        /* ── Fade-in animation for elements ── */
+        .slide.active .fade-in {
+            animation: fadeInUp 0.8s ease forwards;
+        }
+
+        .slide.active .fade-in-d1 {
+            animation-delay: 0.15s;
+        }
+        .slide.active .fade-in-d2 {
+            animation-delay: 0.3s;
+        }
+        .slide.active .fade-in-d3 {
+            animation-delay: 0.45s;
+        }
+        .slide.active .fade-in-d4 {
+            animation-delay: 0.6s;
+        }
+        .slide.active .fade-in-d5 {
+            animation-delay: 0.75s;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in {
+            opacity: 0;
+        }
+
+        /* Floating particles */
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            background: var(--coral);
+            opacity: 0.06;
+            pointer-events: none;
+            animation: float 20s infinite ease-in-out;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0) rotate(0deg);
+            }
+            33% {
+                transform: translateY(-30px) rotate(120deg);
+            }
+            66% {
+                transform: translateY(15px) rotate(240deg);
+            }
+        }
+
+        .slide-number {
+            position: fixed;
+            bottom: 2.5rem;
+            right: 2rem;
+            z-index: 40;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            font-weight: 300;
+            letter-spacing: 0.1em;
+        }
+
+        @media (max-width: 768px) {
+            .slide-number {
+                bottom: 1.5rem;
+                right: 1rem;
+                font-size: 0.7rem;
+            }
+        }
+
+        .heart-beat {
+            display: inline-block;
+            animation: heartBeat 1.5s ease-in-out infinite;
+        }
+
+        @keyframes heartBeat {
+            0%, 100% {
+                transform: scale(1);
+            }
+            15% {
+                transform: scale(1.15);
+            }
+            30% {
+                transform: scale(1);
+            }
+            45% {
+                transform: scale(1.1);
+            }
+            60% {
+                transform: scale(1);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Audio element for background music -->
+    <audio id="bgMusic" loop preload="auto">
+        <source src="./music/fondo.mp3" type="audio/mpeg">
+        Tu navegador no soporta audio HTML5.
+    </audio>
+
+    <div class="slides-container" id="slidesContainer">
+
+        <!-- Background Glows -->
+        <div class="bg-glow bg-glow-1"></div>
+        <div class="bg-glow bg-glow-2"></div>
+        <div class="bg-glow bg-glow-3"></div>
+
+        <!-- Floating particles -->
+        <div class="particle" style="width:300px;height:300px;top:10%;left:5%;animation-duration:25s;"></div>
+        <div class="particle" style="width:200px;height:200px;top:60%;right:8%;animation-duration:18s;background:var(--gold);"></div>
+        <div class="particle" style="width:150px;height:150px;top:30%;right:20%;animation-duration:22s;background:#7c5cbf;"></div>
+
+        <!-- ════════════════════════════════════════════ -->
+        <!-- SLIDE 1: HERO / WELCOME                     -->
+        <!-- ════════════════════════════════════════════ -->
+        <div class="slide slide-hero active" data-slide="0">
+            <div class="slide-content" style="position:relative;z-index:1;">
+                <div class="fade-in">
+                    <div class="photo-frame">
+                        <img src="./images/kmi-photo.jpg" alt="Kmi" onerror="this.style.display='none'">
+                    </div>
+                </div>
+                <h1 class="hero-title font-display fade-in fade-in-d1" style="margin-bottom:0.3rem;">
+                    Para <span class="text-coral">Kmi</span>
+                </h1>
+                <p class="hero-sub fade-in fade-in-d2" style="margin-bottom:2rem;">
+                    Gracias por el video ASMR 💫
+                </p>
+                <div class="fade-in fade-in-d3">
+                    <span style="display:inline-block;padding:0.5rem 1.5rem;border:1px solid rgba(249,115,96,0.2);border-radius:50px;font-size:0.85rem;color:var(--text-secondary);">
+                        Hecho con ❤️ por Victor
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <!-- ════════════════════════════════════════════ -->
+        <!-- SLIDE 2: TU ARTE                             -->
+        <!-- ════════════════════════════════════════════ -->
+        <div class="slide" data-slide="1">
+            <div class="slide-content" style="position:relative;z-index:1;">
+                <div class="fade-in" style="display:flex;align-items:center;justify-content:center;gap:1.5rem;flex-wrap:wrap;margin-bottom:1.5rem;">
+                    <div class="photo-frame photo-frame-sm" style="margin:0;">
+                        <img src="./images/kmi-photo.jpg" alt="Kmi" onerror="this.style.display='none'">
+                    </div>
+                    <span class="font-display text-2xl md:text-3xl" style="color:var(--gold-light);">✦</span>
+                    <div class="photo-frame photo-frame-sm" style="margin:0;">
+                        <img src="./images/kmi-cartoon.jpg" alt="Kmi cartoon" onerror="this.style.display='none'">
+                    </div>
+                </div>
+
+                <p class="message-text fade-in fade-in-d1" style="text-align:left;">
+                    Hola <strong>Kmi</strong> 💫
+                </p>
+                <p class="message-text fade-in fade-in-d2" style="text-align:left;margin-top:0.8rem;">
+                    Espero te haya ido bien en la entrega de tu pintura, porque te quedó preciosa &mdash; y eso que aún ni la habías terminado. Yo no paso de dibujar una bolita y un palito para referirme a una persona <span style="color:var(--coral-light);">JAJAJAJAJAAJA</span>
+                </p>
+                <div class="highlight-box fade-in fade-in-d3" style="text-align:left;">
+                    <p class="message-text" style="font-size:1.05rem;">
+                        <strong>Eres chingona, creativa y simpática.</strong> Cualidades que ya pocas personas tienen.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ════════════════════════════════════════════ -->
+        <!-- SLIDE 3: LA ESCUELA Y EL GRUPO               -->
+        <!-- ════════════════════════════════════════════ -->
+        <div class="slide" data-slide="2">
+            <div class="slide-content" style="position:relative;z-index:1;">
+                <div class="fade-in" style="margin-bottom:1.5rem;">
+                    <span style="font-size:2.5rem;display:inline-block;background:rgba(249,115,96,0.1);width:70px;height:70px;line-height:70px;border-radius:50%;">🎨</span>
+                </div>
+                <p class="message-text fade-in fade-in-d1" style="text-align:left;">
+                    Respecto a tu grupo, me parece que es más <strong>envidia</strong> que otra cosa. Estás estudiando <strong>Comunicación de Artes Visuales</strong> y se burlan por hacer ASMR &mdash; cuando precisamente eso es <strong>arte sonora</strong>, creatividad pura.
+                </p>
+                <p class="message-text fade-in fade-in-d2" style="text-align:left;margin-top:1rem;">
+                    Sé que estás aplicando a <strong>La Esmeralda</strong> (UNAM) y que tu examen es el <strong>23 y 24 de mayo</strong>. Cuatro libros que estudiar, con la presión de mantenerlo en secreto hasta tener resultados. Eso requiere un valor enorme.
+                </p>
+                <div class="highlight-box fade-in fade-in-d3" style="text-align:center;border-color:rgba(212,165,106,0.3);background:rgba(212,165,106,0.06);">
+                    <p class="message-text" style="font-size:1.05rem;">
+                        <span style="color:var(--gold-light);">De escuela privada a pública.</span><br>
+                        Un paso gigante hacia tu <strong>independencia</strong> y tu <strong>sueño</strong>.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ════════════════════════════════════════════ -->
+        <!-- SLIDE 4: RELACIONES                          -->
+        <!-- ════════════════════════════════════════════ -->
+        <div class="slide" data-slide="3">
+            <div class="slide-content" style="position:relative;z-index:1;">
+                <div class="fade-in" style="margin-bottom:1.2rem;">
+                    <span style="font-size:2rem;">💔 → 💪</span>
+                </div>
+                <p class="message-text fade-in fade-in-d1" style="text-align:left;">
+                    Me encantó conocer un poco más acerca de ti y la confianza que nos tienes &mdash; hasta me platicaste de tu exnovio <span style="color:var(--coral-light);">Jajajajaja</span> que se llama igual que yo.
+                </p>
+                <p class="message-text fade-in fade-in-d2" style="text-align:left;margin-top:1rem;">
+                    La verdad, por lo que me platicaste, <strong>lo mejor que te pudo pasar es que se hayan separado</strong>. En mi caso no me veo siendo pareja de alguien que no respete cualquier relación que tenga &mdash; siendo pareja, familia o amigos.
+                </p>
+                <p class="message-text fade-in fade-in-d3" style="text-align:left;margin-top:1rem;color:var(--coral-light);">
+                    Mereces a alguien que te hable <strong>lindo</strong>. Siempre. 💕
+                </p>
+            </div>
+        </div>
+
+        <!-- ════════════════════════════════════════════ -->
+        <!-- SLIDE 5: FABRICANDO TU SUERTE                -->
+        <!-- ════════════════════════════════════════════ -->
+        <div class="slide" data-slide="4">
+            <div class="slide-content" style="position:relative;z-index:1;">
+                <div class="fade-in" style="margin-bottom:1rem;">
+                    <span style="font-size:3rem;display:inline-block;animation:heartBeat 2s ease-in-out infinite;">🍀</span>
+                </div>
+                <p class="message-text fade-in fade-in-d1" style="text-align:left;font-size:clamp(1.2rem,2.2vw,1.5rem);font-family:'Playfair Display',serif;font-style:italic;color:var(--gold-light);">
+                    "Te desearía suerte en tu examen, pero como te veo de comprometida con lo que te gusta, la verdad <strong>tú estás fabricando tu propia suerte</strong>."
+                </p>
+                <p class="message-text fade-in fade-in-d2" style="text-align:left;margin-top:1.2rem;">
+                    Todas nuestras acciones traen consecuencias. Y tu <strong>compromiso con el arte</strong> te llevará lejos, Kmi. No tengo duda.
+                </p>
+                <div class="highlight-box fade-in fade-in-d3" style="text-align:center;border-color:rgba(249,115,96,0.3);">
+                    <p class="message-text" style="font-size:1.1rem;">
+                        <strong>No es suerte.</strong> Es talento + disciplina + pasión. <br>Y tú tienes las tres.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ════════════════════════════════════════════ -->
+        <!-- SLIDE 6: GIMNASIO Y CRECIMIENTO              -->
+        <!-- ════════════════════════════════════════════ -->
+        <div class="slide" data-slide="5">
+            <div class="slide-content" style="position:relative;z-index:1;">
+                <div class="fade-in" style="margin-bottom:1rem;">
+                    <span style="font-size:2.5rem;display:inline-block;">🏋️‍♀️✨</span>
+                </div>
+                <p class="message-text fade-in fade-in-d1" style="text-align:left;">
+                    Respecto al gimnasio &mdash; <strong>me alegro mucho</strong> que te hayas enfocado en ti misma. No hay nada mejor que <strong>fortalecer cuerpo y mente</strong>.
+                </p>
+                <p class="message-text fade-in fade-in-d2" style="text-align:left;margin-top:1rem;">
+                    Estás en una etapa de <strong>crecimiento y desarrollo</strong> y vas <strong>excelente</strong>. Cambiar de escuela, terminar una relación que no te sumaba, invertir en tu salud, perseguir el arte &mdash; todo eso es de personas <strong>valientes</strong>.
+                </p>
+                <div class="highlight-box fade-in fade-in-d3" style="text-align:center;background:rgba(212,165,106,0.06);border-color:rgba(212,165,106,0.25);">
+                    <p class="message-text" style="font-size:1rem;">
+                        🌱 <strong>Estás floreciendo.</strong> Y es hermoso verlo.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ════════════════════════════════════════════ -->
+        <!-- SLIDE 7: AGRADECIMIENTO Y REDES              -->
+        <!-- ════════════════════════════════════════════ -->
+        <div class="slide" data-slide="6">
+            <div class="slide-content" style="position:relative;z-index:1;">
+                <div class="fade-in" style="display:flex;align-items:center;justify-content:center;gap:1.5rem;flex-wrap:wrap;margin-bottom:1.5rem;">
+                    <div class="photo-frame photo-frame-sm" style="margin:0;">
+                        <img src="./images/kmi-cartoon.jpg" alt="Kmi cartoon" onerror="this.style.display='none'">
+                    </div>
+                </div>
+
+                <p class="message-text fade-in fade-in-d1" style="text-align:left;font-size:1.1rem;">
+                    Para terminar &mdash; muchas gracias por el video de ASMR. <strong>Me encantó.</strong> 🎧
+                </p>
+                <p class="message-text fade-in fade-in-d2" style="text-align:left;margin-top:0.8rem;margin-bottom:1.5rem;">
+                    Por eso realicé esta página &mdash; para agradecerte. Cualquier cosa me escribes al IG. Queda pendiente que te platique de mis 2 exs. Pero eso será en otro video ASMR, ¿no? <span style="color:var(--coral-light);">JAJAJAJAJAAJA</span>
+                </p>
+
+                <div class="fade-in fade-in-d3" style="display:flex;flex-wrap:wrap;justify-content:center;gap:1rem;margin-top:1rem;">
+                    <a href="https://www.instagram.com/kmiasmr_yt" target="_blank" rel="noopener noreferrer" class="social-link instagram">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+                        @kmiasmr_yt
+                    </a>
+                    <a href="https://www.youtube.com/watch?v=CQeaRdqpHuU" target="_blank" rel="noopener noreferrer" class="social-link youtube">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.42a2.78 2.78 0 0 0-1.94 2A29.87 29.87 0 0 0 1 12a29.87 29.87 0 0 0 .46 5.58 2.78 2.78 0 0 0 1.94 2C5.12 20 12 20 12 20s6.88 0 8.6-.42a2.78 2.78 0 0 0 1.94-2A29.87 29.87 0 0 0 23 12a29.87 29.87 0 0 0-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98" fill="var(--bg-dark)"/></svg>
+                        Video ASMR
+                    </a>
+                    <a href="https://www.instagram.com/cotton_yuu" target="_blank" rel="noopener noreferrer" class="social-link" style="border-color:rgba(255,255,255,0.1);">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                        @cotton_yuu
+                    </a>
+                </div>
+
+                <div class="fade-in fade-in-d4" style="margin-top:2rem;">
+                    <p class="font-display text-xl" style="color:var(--coral-light);">
+                        Te deseo lo mejor, Kmi <span class="heart-beat">💗</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation Arrows -->
+        <button class="nav-arrow prev" id="prevBtn" aria-label="Anterior">◀</button>
+        <button class="nav-arrow next" id="nextBtn" aria-label="Siguiente">▶</button>
+
+        <!-- Dots -->
+        <div class="dots" id="dots"></div>
+
+        <!-- Slide Counter -->
+        <div class="slide-number" id="slideNumber">1 / 7</div>
+
+        <!-- Progress Bar -->
+        <div class="progress-bar" id="progressBar" style="width:0%;"></div>
+
+    </div>
+
+    <!-- Music Button (positioned absolute over the slides) -->
+    <button class="music-btn" id="musicBtn" aria-label="Reproducir música">
+        <span class="icon-play">🎵</span>
+        <span class="icon-pause">
+            <span class="visualizer-bars">
+                <span class="visualizer-bar"></span>
+                <span class="visualizer-bar"></span>
+                <span class="visualizer-bar"></span>
+                <span class="visualizer-bar"></span>
+            </span>
+        </span>
+    </button>
+
+    <script>
+        (function() {
+            const slides = document.querySelectorAll('.slide');
+            const dotsContainer = document.getElementById('dots');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const slideNumber = document.getElementById('slideNumber');
+            const progressBar = document.getElementById('progressBar');
+
+            const total = slides.length;
+            let current = 0;
+            let autoPlayInterval = null;
+            let progressInterval = null;
+            const AUTO_DELAY = 9000;
+            const PROGRESS_INTERVAL = 50;
+            let elapsed = 0;
+            let isPaused = false;
+
+            // Create dots
+            for (let i = 0; i < total; i++) {
+                const dot = document.createElement('button');
+                dot.className = 'dot' + (i === 0 ? ' active' : '');
+                dot.setAttribute('data-index', i);
+                dot.setAttribute('aria-label', 'Ir a slide ' + (i + 1));
+                dotsContainer.appendChild(dot);
+            }
+            const dots = document.querySelectorAll('.dot');
+
+            function goToSlide(index) {
+                slides.forEach(s => s.classList.remove('active'));
+                dots.forEach(d => d.classList.remove('active'));
+
+                current = index;
+                slides[current].classList.add('active');
+                dots[current].classList.add('active');
+                slideNumber.textContent = (current + 1) + ' / ' + total;
+
+                prevBtn.classList.toggle('hidden', current === 0);
+                nextBtn.classList.toggle('hidden', current === total - 1);
+
+                resetProgress();
+            }
+
+            function nextSlide() {
+                if (current < total - 1) {
+                    goToSlide(current + 1);
+                }
+            }
+
+            function prevSlide() {
+                if (current > 0) {
+                    goToSlide(current - 1);
+                }
+            }
+
+            function resetProgress() {
+                elapsed = 0;
+                progressBar.style.width = '0%';
+                clearInterval(progressInterval);
+                if (!isPaused) {
+                    progressInterval = setInterval(updateProgress, PROGRESS_INTERVAL);
+                }
+            }
+
+            function updateProgress() {
+                elapsed += PROGRESS_INTERVAL;
+                const pct = Math.min((elapsed / AUTO_DELAY) * 100, 100);
+                progressBar.style.width = pct + '%';
+                if (elapsed >= AUTO_DELAY) {
+                    nextSlide();
+                }
+            }
+
+            function startAutoPlay() {
+                stopAutoPlay();
+                isPaused = false;
+                resetProgress();
+                autoPlayInterval = setInterval(() => {}, AUTO_DELAY);
+            }
+
+            function stopAutoPlay() {
+                clearInterval(autoPlayInterval);
+                clearInterval(progressInterval);
+                autoPlayInterval = null;
+                progressInterval = null;
+            }
+
+            function pauseAutoPlay() {
+                isPaused = true;
+                clearInterval(progressInterval);
+                progressInterval = null;
+            }
+
+            function resumeAutoPlay() {
+                if (isPaused) {
+                    isPaused = false;
+                    resetProgress();
+                }
+            }
+
+            const container = document.getElementById('slidesContainer');
+
+            container.addEventListener('mouseenter', () => {
+                pauseAutoPlay();
+            });
+
+            container.addEventListener('mouseleave', () => {
+                if (!isPaused) {
+                    resumeAutoPlay();
+                }
+            });
+
+            let touchStartX = 0;
+            let touchEndX = 0;
+
+            container.addEventListener('touchstart', (e) => {
+                touchStartX = e.changedTouches[0].screenX;
+                pauseAutoPlay();
+            }, { passive: true });
+
+            container.addEventListener('touchend', (e) => {
+                touchEndX = e.changedTouches[0].screenX;
+                const diff = touchStartX - touchEndX;
+                if (Math.abs(diff) > 50) {
+                    if (diff > 0) {
+                        nextSlide();
+                    } else {
+                        prevSlide();
+                    }
+                }
+                setTimeout(() => {
+                    if (!isPaused) resumeAutoPlay();
+                }, 3000);
+            }, { passive: true });
+
+            prevBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                prevSlide();
+                if (!isPaused) resetProgress();
+            });
+
+            nextBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                nextSlide();
+                if (!isPaused) resetProgress();
+            });
+
+            dots.forEach((dot, i) => {
+                dot.addEventListener('click', () => {
+                    if (i !== current) {
+                        goToSlide(i);
+                        if (!isPaused) resetProgress();
+                    }
+                });
+            });
+
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') {
+                    e.preventDefault();
+                    nextSlide();
+                    if (!isPaused) resetProgress();
+                } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+                    e.preventDefault();
+                    prevSlide();
+                    if (!isPaused) resetProgress();
+                }
+            });
+
+            document.addEventListener('visibilitychange', () => {
+                if (document.hidden) {
+                    pauseAutoPlay();
+                } else {
+                    if (!isPaused) resumeAutoPlay();
+                }
+            });
+
+            goToSlide(0);
+            startAutoPlay();
+
+            // ── Music Controls ──
+            const musicBtn = document.getElementById('musicBtn');
+            const audio = document.getElementById('bgMusic');
+            let musicStarted = false;
+
+            function toggleMusic() {
+                if (!musicStarted) {
+                    audio.play().then(() => {
+                        musicStarted = true;
+                        musicBtn.classList.add('playing');
+                    }).catch(() => {});
+                } else if (audio.paused) {
+                    audio.play().then(() => {
+                        musicBtn.classList.add('playing');
+                    }).catch(() => {});
+                } else {
+                    audio.pause();
+                    musicBtn.classList.remove('playing');
+                }
+            }
+
+            musicBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                toggleMusic();
+            });
+
+            // Start music on first user interaction (browsers block autoplay)
+            const startMusicOnInteraction = () => {
+                if (!musicStarted) {
+                    audio.play().then(() => {
+                        musicStarted = true;
+                        musicBtn.classList.add('playing');
+                    }).catch(() => {});
+                }
+                document.removeEventListener('click', startMusicOnInteraction);
+                document.removeEventListener('touchstart', startMusicOnInteraction);
+                document.removeEventListener('keydown', startMusicOnInteraction);
+            };
+
+            document.addEventListener('click', startMusicOnInteraction);
+            document.addEventListener('touchstart', startMusicOnInteraction);
+            document.addEventListener('keydown', startMusicOnInteraction);
+
+            audio.addEventListener('ended', () => {
+                musicBtn.classList.remove('playing');
+            });
+        })();
+    </script>
+
+<script>window.parent.postMessage({ action: "ready" }, "*"); 
+ 
+window.console = new Proxy(console, {
+  get(target, prop) {
+    if (['log', 'warn', 'error'].includes(prop)) {
+      return new Proxy(target[prop], {
+        apply(fn, thisArg, args) {
+          fn.apply(thisArg, args);
+          window.parent.postMessage({ action: 'console', 
+            type: prop, 
+            args: args.map((arg) => {
+              try {
+                return JSON.stringify(arg).replace(/^["']|["']$/g, '');
+              } catch (e) {
+                return arg;
+              }
+            }) 
+          }, '*');
+        }
+      });
+    }
+    return target[prop];
+  }
+});
+</script></body>
+</html>
